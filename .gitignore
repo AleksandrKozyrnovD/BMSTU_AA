@@ -9,6 +9,7 @@
 *.gz
 *.toc
 *.ps
+*.pdf
 *__pycache__*
 *.exe
 *bin*
