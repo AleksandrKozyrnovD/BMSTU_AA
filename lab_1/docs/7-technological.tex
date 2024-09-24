@@ -1,0 +1,51 @@
+\chapter{Технологическая часть}
+
+В данном разделе будут приведены требования к ПО, реализация алгоритмов и средства реализации.
+
+\section{Требования к программному обеспечению}
+
+Входные данные: две строчки из латинских или кириллических символов;
+
+Выходные данные: целое число, которое является искомым расстоянием между двумя строчками.
+
+
+\section{Средства реализации}
+
+Для реализации был выбран ЯП Python \cite{bib1}.
+Выбор обсуловлен наличием функции вычисления процессорного времени в библиотеке
+time \cite{bib2}. Время было замерено с помощью функции process\_time().
+
+\section{Реализация  алгоритмов}
+
+В листингах \ref{lst:rec-lev} --- \ref{lst:ddyn-lev} представлены реализации алгоритмов
+нахождения расстояний Левенштейна и Дамерау-Левенштейна.
+
+\begin{center}
+\captionsetup{justification=raggedright,singlelinecheck=off}
+\lstinputlisting[label=lst:rec-lev, firstline=1, lastline=22,
+caption=Реализация рекурсивного алгоритма
+нахождения расстояния Левенштейна]{../src/lsht.py}
+\end{center}
+
+
+\begin{center}
+\captionsetup{justification=raggedright,singlelinecheck=off}
+\lstinputlisting[label=lst:dyn-lev, firstline=26, lastline=51,
+caption=Реализация динамического алгоритма
+нахождения расстояния Левенштейна]{../src/lsht.py}
+\end{center}
+
+
+\begin{center}
+\captionsetup{justification=raggedright,singlelinecheck=off}
+\lstinputlisting[label=lst:ddyn-lev, firstline=53, lastline=79,
+caption=Реализация динамического алгоритма
+нахождения расстояния Дамерау-Левенштейна]{../src/lsht.py}
+\end{center}
+
+
+\paragraph*{ВЫВОД} ${}$ \newline
+В данном разделе рассмотрены средства реализации, требования к ПО и реализации алгоритмов.
+
+
+\clearpage
