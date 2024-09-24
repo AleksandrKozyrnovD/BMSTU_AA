@@ -10,3 +10,8 @@
 *.toc
 *.ps
 *__pycache__*
+*.exe
+*bin*
+*build*
+*.cache*
+*.vscode*
