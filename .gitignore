@@ -1,0 +1,12 @@
+*.aux
+*.bbl
+*.dvi
+*.fdb_*
+*.fls
+*.log
+*.out
+*.synctex
+*.gz
+*.toc
+*.ps
+*__pycache__*
