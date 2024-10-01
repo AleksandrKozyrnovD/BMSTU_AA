@@ -36,26 +36,4 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${INC_DIR}")
 
 # --- START DEPENDENCIES ---
 
-# find_package(SDL2 REQUIRED)
-# target_link_libraries(${PROJECT_NAME} PUBLIC SDL2::SDL2)
-
-# set(DEPS_DIR "${PROJECT_SOURCE_DIR}/dependencies")
-
-# target_include_directories(${PROJECT_NAME} PUBLIC "${DEPS_DIR}/glad/include/")
-
-# add_subdirectory("${DEPS_DIR}/glfw")
-# target_link_libraries(${PROJECT_NAME} "glfw")
-
-# find_package(OpenGL REQUIRED)
-# target_link_libraries(${PROJECT_NAME} OpenGL::GL)
-
-# add_library(gladlib STATIC "${DEPS_DIR}/glad/src/gl.c")
-# target_include_directories(gladlib PUBLIC "${DEPS_DIR}/glad/include/")
-# target_link_libraries(${PROJECT_NAME} gladlib)
-
-# file(GLOB imguisource CONFIGURE_DEPENDS "${SRC_DIR}/vendor/imgui/*.cpp")
-# add_library(imguilib STATIC "${imguisource}")
-# target_link_libraries(imguilib "glfw")
-# target_link_libraries(${PROJECT_NAME} imguilib)
-
 # --- END DEPENDENCIES ---

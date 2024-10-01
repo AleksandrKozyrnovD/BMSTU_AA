@@ -121,7 +121,6 @@ matrix_t *matrix_mult(const matrix_t *A, const matrix_t *B)
     {
         return NULL;
     }
-
     matrix_t *C = matrix_alloc(A->rows, B->cols);
     if (!C)
     {
@@ -141,7 +140,6 @@ matrix_t *matrix_mult(const matrix_t *A, const matrix_t *B)
             }
         }
     }
-
     return C;
 }
 
@@ -164,8 +162,6 @@ matrix_t *matrix_mult_vinograd(const matrix_t *A, const matrix_t *B)
         free(MulH);
         return NULL;
     }
-
-
     matrix_t *C = matrix_alloc(A->rows, B->cols);
     if (!C)
     {
@@ -173,11 +169,9 @@ matrix_t *matrix_mult_vinograd(const matrix_t *A, const matrix_t *B)
         free(MulV);
         return NULL;
     }
-
     float **data_C = C->data;
     float **data_A = A->data;
     float **data_B = B->data;
-    
     for (size_t i = 0; i < N; i++)
     {
         for (size_t k = 0; k < M / 2; k++)
@@ -192,7 +186,6 @@ matrix_t *matrix_mult_vinograd(const matrix_t *A, const matrix_t *B)
             MulV[i] = MulV[i] + data_B[2 * k][i] * data_B[2 * k + 1][i];
         }
     }
-
     for (size_t i = 0; i < N; i++)
     {
         for (size_t j = 0; j < K; j++)
@@ -206,12 +199,86 @@ matrix_t *matrix_mult_vinograd(const matrix_t *A, const matrix_t *B)
             }
         }
     }
-
+    if (M % 2) //if M is odd
+    {
+        for (size_t i = 0; i < N; i++)
+        {
+            for (size_t j = 0; j < K; j++)
+            {
+                data_C[i][j] = data_C[i][j] + data_A[i][M - 1] * data_B[M - 1][j];
+            }
+        }
+    }
     free(MulH);
     free(MulV);
     return C;
-
 }
+
+matrix_t *matrix_mult_vinograd_opt(const matrix_t *A, const matrix_t *B)
+{
+    if (!A || !B || A->cols != B->rows)
+    {
+        return NULL;
+    }
+    size_t N = A->rows, M = A->cols, K = B->cols;
+    size_t M2 = (M >> 1);
+    float *MulH = (float *)calloc(N, sizeof(float));
+    if (!MulH)
+    {
+        return NULL;
+    }
+    float *MulV = (float *)calloc(K, sizeof(float));
+    if (!MulV)
+    {
+        free(MulH);
+        return NULL;
+    }
+    matrix_t *C = matrix_alloc(A->rows, B->cols);
+    if (!C)
+    {
+        free(MulH);
+        free(MulV);
+        return NULL;
+    }
+    float **data_C = C->data;
+    float **data_A = A->data;
+    float **data_B = B->data;
+    for (size_t i = 0; i < N; i++)
+    {
+        for (size_t k = 0; k < M2; k++)
+        {
+            MulH[i] += data_A[i][k << 1] * data_A[i][(k << 1) | 0x1];
+        }
+    }
+    for (size_t i = 0; i < K; i++)
+    {
+        for (size_t k = 0; k < M2; k++)
+        {
+            MulV[i] += data_B[(k << 1)][i] * data_B[(k << 1) | 0x1][i];
+        }
+    }
+    for (size_t i = 0; i < N; i++)
+    {
+        for (size_t j = 0; j < K; j++)
+        {
+            data_C[i][j] = -MulH[i] - MulV[j];
+            for (size_t k = 0; k < M2; k++)
+            {
+                data_C[i][j] += 
+                                              (data_A[i][(k << 1) | 0x1] + data_B[(k << 1)][j]) //*
+                                            * (data_A[i][(k << 1)] + data_B[(k << 1) | 0x1][j]);
+            }
+            if (M & 1) //if M is odd
+            {
+                data_C[i][j] += data_A[i][M - 1] * data_B[M - 1][j];
+            }
+        }
+    }
+    free(MulH);
+    free(MulV);
+    return C;
+}
+
 void matrix_print(const matrix_t *m)
 {
     if (!m)
@@ -224,7 +291,7 @@ void matrix_print(const matrix_t *m)
     {
         for (size_t j = 0; j < cols; j++)
         {
-            printf("%f\n", data[i][j]);
+            printf("%f ", data[i][j]);
         }
         printf("\n");
     }

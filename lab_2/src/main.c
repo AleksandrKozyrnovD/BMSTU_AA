@@ -1,41 +1,45 @@
 #include "struct_matrix.h"
 #include "experiment.h"
-
+#include <stdio.h>
 
 int main(void)
 {
-    get_time_interval(2, 20, 2, 1000);
-    // printf("Hello, World!\n");
+    // get_time_interval(2, 20, 1, 1000);
+    printf("Hello, World!\n");
 
-    // matrix_t *A = matrix_alloc(1, 4);
-    // if (!A)
-    // {
-    //     return M_MEM;
-    // }
+    matrix_t *A = matrix_alloc(5, 5);
+    if (!A)
+    {
+        return M_MEM;
+    }
 
-    // matrix_t *B = matrix_alloc(4, 1);
-    // if (!B)
-    // {
-    //     matrix_free(&A);
-    //     return M_MEM;
-    // }
+    matrix_t *B = matrix_alloc(5, 5);
+    if (!B)
+    {
+        matrix_free(&A);
+        return M_MEM;
+    }
 
+    for (size_t i = 0; i < 5; i++)
+    {
+        for (size_t j = 0; j < 5; j++)
+        {
+            matrix_set(A, i, j, i * 3 + j);
+            matrix_set(B, i, j, i * 3 + j);
+        }
+    }
 
-    // matrix_set(A, 0, 0, 1.0f);
-    // matrix_set(A, 0, 1, 2.0f);
-    // matrix_set(A, 0, 2, 3.0f);
-    // matrix_set(A, 0, 3, 4.0f);
+    matrix_t *C = matrix_mult_vinograd_opt(A, B);
+    printf("A:\n");
+    matrix_print(A);
+    printf("B:\n");
+    matrix_print(B);
+    printf("C:\n");
+    matrix_print(C);
 
-    // matrix_set(B, 0, 0, 1.0f);
-    // matrix_set(B, 1, 0, 2.0f);
-    // matrix_set(B, 2, 0, 3.0f);
-    // matrix_set(B, 3, 0, 4.0f);
-
-    // matrix_t *C = matrix_mult_vinograd(A, B);
-
-    // matrix_free(&C);
-    // matrix_free(&A);
-    // matrix_free(&B);
+    matrix_free(&C);
+    matrix_free(&A);
+    matrix_free(&B);
 
     return 0;
 }

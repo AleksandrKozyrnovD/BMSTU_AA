@@ -36,6 +36,7 @@ matrix_error_t matrix_randomize(matrix_t *m, float min, float max);
 //OPERATIONS
 matrix_t *matrix_mult(const matrix_t *A, const matrix_t *B);
 matrix_t *matrix_mult_vinograd(const matrix_t *A, const matrix_t *B);
+matrix_t *matrix_mult_vinograd_opt(const matrix_t *A, const matrix_t *B);
 //ENDOPERATIONS
 
 //OUTPUt FOR DEBUG
