@@ -1,13 +1,57 @@
 \chapter{Технологическая часть}
+В данном разделе будут приведены требования к программному обеспечению,
+средства реализации, листинги кода
+
+
 
 
 \section{Требования к программному обеспечению}
 
-Входные данные: ;
+Входные данные: матрица $A$ и  $B$, где количество столбцов первой матрицы равно количеству
+строк второй матрицы;
 
-Выходные данные: .
+Выходные данные: матрица $C$.
 
 
-%\textbf{ВЫВОД}
+
+
+\section{Средства реализации}
+
+Для реализации алгоритмов был выбран язык $C$, потому что
+можно просто контролировать количество выделяемой и используемой памяти
+в микронотроллере.
+
+\section{Реализация алгоритмов}
+
+В листингах \ref{code:1} --- \ref{code:3} предоставлены листинги реализации
+алгоритмов умножения матриц.
+
+\begin{center}
+\captionsetup{justification=raggedright,singlelinecheck=off}
+\lstinputlisting[label=code:1,firstline=118, lastline=144,
+caption=Классический алгоритм умножения матриц]{../src/struct_matrix.c}
+\end{center}
+
+
+
+\begin{center}
+\captionsetup{justification=raggedright,singlelinecheck=off}
+\lstinputlisting[label=code:2,firstline=147, lastline=215,
+caption=Алгоритм умножения матриц Винограда]{../src/struct_matrix.c}
+\end{center}
+
+
+\begin{center}
+\captionsetup{justification=raggedright,singlelinecheck=off}
+\lstinputlisting[label=code:3,firstline=217, lastline=280,
+caption=Оптимизированный алгоритм умножения матриц Винограда]{../src/struct_matrix.c}
+\end{center}
 
 \clearpage
+
+\paragraph*{ВЫВОД} ${}$ \newline
+
+В данном разделе были представлены средства реализации, требования к программному обеспечению,
+технические характеристики и реализация алгоритмов.
+
+

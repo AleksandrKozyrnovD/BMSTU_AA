@@ -133,7 +133,7 @@ matrix_t *matrix_mult(const matrix_t *A, const matrix_t *B)
     {
         for (size_t j = 0; j < B->cols; j++)
         {
-            data_C[i][j] = 0.0f;
+            // data_C[i][j] = 0.0f;
             for (size_t k = 0; k < A->cols; k++)
             {
                 data_C[i][j] = data_C[i][j] + data_A[i][k] * data_B[k][j];
@@ -261,7 +261,7 @@ matrix_t *matrix_mult_vinograd_opt(const matrix_t *A, const matrix_t *B)
     {
         for (size_t j = 0; j < K; j++)
         {
-            data_C[i][j] = -MulH[i] - MulV[j];
+            data_C[i][j] -= (MulH[i] + MulV[j]);
             for (size_t k = 0; k < M2; k++)
             {
                 data_C[i][j] += 

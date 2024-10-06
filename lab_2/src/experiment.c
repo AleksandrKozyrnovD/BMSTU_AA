@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define BILLION  1000000000.0
+
 void calculate_matrix(void)
 {
     return;
@@ -34,6 +36,8 @@ static int get_time_matrix(size_t matrix_size, size_t repeat, double *res)
         return M_MEM;
     }
 
+    printf("%zu ", matrix_size);
+    all_clocks = 0;
     for (size_t i = 0; i < repeat; i++)
     {
         matrix_randomize(A, -100, 100);
@@ -46,7 +50,43 @@ static int get_time_matrix(size_t matrix_size, size_t repeat, double *res)
         all_clocks += end - start;
         matrix_free(&C);
     }
+ 
+    // printf("& %1.2e ", (double)(all_clocks) /repeat / CLOCKS_PER_SEC);
+    printf("%1.2e ", (double)(all_clocks) /repeat / CLOCKS_PER_SEC);
+    all_clocks = 0;
+    for (size_t i = 0; i < repeat; i++)
+    {
+        matrix_randomize(A, -100, 100);
+        matrix_randomize(B, -100, 100);
 
+        start = clock();
+        C = matrix_mult_vinograd(A, B);
+        end = clock();
+
+        all_clocks += end - start;
+        matrix_free(&C);
+    }
+
+    printf("%1.2e ", (double)(all_clocks) /repeat / CLOCKS_PER_SEC);
+    // printf("& %1.2e ", (double)(all_clocks) /repeat / CLOCKS_PER_SEC);
+    all_clocks = 0;
+    for (size_t i = 0; i < repeat; i++)
+    {
+        matrix_randomize(A, -100, 100);
+        matrix_randomize(B, -100, 100);
+
+        start = clock();
+        C = matrix_mult_vinograd_opt(A, B);
+        end = clock();
+
+        all_clocks += end - start;
+        matrix_free(&C);
+    }
+    // printf("& %1.2e \\\\ \\hline \n", (double)(all_clocks) /repeat / CLOCKS_PER_SEC);
+    printf("%1.2e\n", (double)(all_clocks) /repeat / CLOCKS_PER_SEC);
+
+
+    all_clocks /= CLOCKS_PER_SEC;
     *res = (double)(all_clocks) / repeat;
 
     matrix_free(&A);
@@ -59,11 +99,12 @@ int get_time_interval(size_t size_start, size_t size_end, size_t size_step, size
 {
     double res;
     int error = 0;
-    for (size_t size = size_start; !error && size <= size_end; size += size_step)
+    for (size_t size = size_start, i = 1; !error && size <= size_end; size += size_step, i++)
     {
         if (!(error = get_time_matrix(size, repeat, &res)))
         {
-            printf("size = %zu and time = %f\n", size, res);
+            // printf("size = %zu and time = %f\n", size, res);
+            // printf("%3zu & %1.2e\n", size, res * 34.7f);
         }
         else
         {
