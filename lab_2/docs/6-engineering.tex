@@ -56,13 +56,44 @@
 
 \clearpage
 
-\section{Трудоемкость алгоритмов}
+
+\subsection{Трудоемкость алгоритмов}
 
 В следующих подразделах будут рассмотрены трудоемкость алгоритмов
 умножения матриц.
 Во всех последующих алгоритмах не будем учитывать инициализацию
 матрицы, в которую записывается результат, потому что данное действие
-есть во всех алгоритмах.
+есть во всех алгоритмах. Размер матрицы $A$  $N\times M$, размер матрицы $B$  $M\times K$.
+
+
+\subsection{Модель вычислений}
+
+
+Следующие операции будут иметь трудоемкость 1:
+\begin{equation}
+    +,-,[ \  ], <<, >>, |, &, <, <=, >, >=, =, ==, ++, --, +=, -=
+\end{equation}
+
+Следующие операции будут иметь трудоемкость 2:
+\begin{equation}
+    *, /, \%, *=
+\end{equation}
+
+Трудоемкость цикла будет рассчитываться как:
+\begin{equation}
+    f_{cycly} = f_{init} + f_{check} + N(f_{body} + f_{check}),
+\end{equation}
+где $N$ - количество итераций цикла.
+
+\medskip
+
+Трудоемкость условного оператора будет определяться как:
+\begin{equation}
+    f_{if} = \begin{cases}
+        f_{check}, & $ трудоемкость в случае невыполнения условия, \\
+        f_{check} + f_{body}, & $ иначе.
+    \end{cases}
+\end{equation}
 
 \subsection{Классический алгоритм}
 
@@ -79,11 +110,11 @@
 
     \itemm внутреннего цикла $k = \overline{1, M}$:
     \begin{equation}
-        f_{jbody} = 2 + M \cdot (12 + 2).
+        f_{jbody} = 2 + M \cdot (12 + 2);
     \end{equation}
 \end{itemize}
 
-Тогда, если объединить (2.1) --- (2.3) получим:
+Тогда, если объединить (2.1) --- (2.3):
 \begin{equation}
     f = 2 + N \cdot
     (
@@ -91,12 +122,12 @@
         (
             4 + 14M
         )
-    )
+    );
 \end{equation}
 
-Или, если упростить:
+После упрощения (2.8):
 \begin{equation}
-    f = 14NKM + 4NK + 4N + 2 \approx 14NKM
+    f = 14NKM + 4NK + 4N + 2 \approx 14NKM.
 \end{equation}
 
 
@@ -104,24 +135,24 @@
 
 Трудоемкость
 \begin{itemize}
-    \itemm создание и инициализация массивов $MulH$ и $MulV$:
+    \itemm создания и инициализации массивов $MulH$ и $MulV$:
     \begin{equation}
         f_{init} = M + N;
     \end{equation}
 
-    \itemm Заполнение массива $MulH$:
+    \itemm Заполнения массива $MulH$:
      \begin{equation}
         f_H = 2 + N(2 + \frac{M}{2}\cdot 17);
     \end{equation}
 
-    \itemm Заполнение массива $MulV$:
+    \itemm Заполнения массива $MulV$:
      \begin{equation}
         f_V = 2 + K(2 + \frac{M}{2}\cdot 17);
     \end{equation}
 
-    \itemm основной цикл умножения для четных размеров матриц:
+    \itemm основного цикла умножения для четных размеров матриц:
     \begin{equation}
-        f_{cycle} = 2 + N(2 + K(11 + 14M))
+        f_{cycle} = 2 + N(2 + K(11 + 14M));
     \end{equation}
 
     \itemm цикла умножения последней нечетной строки и последнего нечетного столбца:
@@ -130,12 +161,12 @@
             2, & $четный размер\\
             2 + N(2 + 14K), & $иначе
         \end{cases}
-    \end{equation}
+    \end{equation}.
 \end{itemize}
 
-Для нечетного (худшего) случая трудоемкость будет:
+Для нечетной размерности матрицы трудоемкость:
 \begin{equation}
-    f_{1} = f_{init} + f_H + f_V + f_{cycle} + f_{odd} \approx 14NMK
+    f_{1} = f_{init} + f_H + f_V + f_{cycle} + f_{odd} \approx 14NMK.
 \end{equation}
 
 
@@ -143,39 +174,41 @@
 
 Трудоемкость
 \begin{itemize}
-    \itemm создание и инициализация массивов $MulH$ и $MulV$:
+    \itemm создания и инициализации массивов $MulH$ и $MulV$:
     \begin{equation}
         f_{init} = M + N;
     \end{equation}
 
-    \itemm Заполнение массива $MulH$:
+    \itemm Заполнения массива $MulH$:
      \begin{equation}
         f_H = 2 + N(2 + \frac{M}{2}\cdot 11);
     \end{equation}
 
-    \itemm Заполнение массива $MulV$:
+    \itemm Заполнения массива $MulV$:
      \begin{equation}
         f_V = 2 + K(2 + \frac{M}{2}\cdot 11);
     \end{equation}
 
     \itemm цикл умножения для четных размеров матриц:
     \begin{equation}
-        f_{cycle even} = 2 + N(2 + K(11 + 8.5\cdot M))
+        f_{cycle even} = 2 + N(2 + K(11 + 8.5\cdot M));
     \end{equation}
 
     \itemm цикл умножения для нечетных размеров матриц:
     \begin{equation}
-        f_{cycle odd} = 2 + N(2 + K(22 + 8.5\cdot M))
+        f_{cycle odd} = 2 + N(2 + K(22 + 8.5\cdot M));
     \end{equation}
 
 \end{itemize}
 
-Для нечетного (худшего) случая трудоемкость будет:
+Для нечетной размерности матриц трудоемкость:
 \begin{equation}
-    f_{1} = f_{init} + f_H + f_V + f_{cycle odd} \approx 8.5\cdot NMK
+    f_{1} = f_{init} + f_H + f_V + f_{cycle odd} \approx 8.5\cdot NMK.
 \end{equation}
 
 \paragraph*{ВЫВОД} ${}$ \newline
 
 В данном разделе были рассмотрены представления алгоритмов и трудоемкость их выполнения.
+Классический алгоритм и обычный алгоритм Винограда имеют одинаковую трудоемкость.
+Оптимизированный алгоритм Винограда имеет наименьшую трудоемкость из представленных алгоритмов.
 
