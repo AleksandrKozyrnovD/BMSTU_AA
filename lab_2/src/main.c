@@ -7,7 +7,7 @@ int main(void)
     // get_time_interval(2, 10, 1, 1000);
     // get_time_interval(10, 111, 11, 1000);
 
-    get_time_interval(50, 250, 25, 100);
+    get_time_interval(25, 300, 25, 100);
 
     // printf("Hello, World!\n");
 

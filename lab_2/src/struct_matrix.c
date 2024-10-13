@@ -126,17 +126,13 @@ matrix_t *matrix_mult(const matrix_t *A, const matrix_t *B)
     {
         return NULL;
     }
-    float **data_C = C->data;
-    float **data_A = A->data;
-    float **data_B = B->data;
     for (size_t i = 0; i < A->rows; i++)
     {
         for (size_t j = 0; j < B->cols; j++)
         {
-            // data_C[i][j] = 0.0f;
             for (size_t k = 0; k < A->cols; k++)
             {
-                data_C[i][j] = data_C[i][j] + data_A[i][k] * data_B[k][j];
+                C->data[i][j] = C->data[i][j] + A->data[i][k] * B->data[k][j];
             }
         }
     }
@@ -169,33 +165,30 @@ matrix_t *matrix_mult_vinograd(const matrix_t *A, const matrix_t *B)
         free(MulV);
         return NULL;
     }
-    float **data_C = C->data;
-    float **data_A = A->data;
-    float **data_B = B->data;
     for (size_t i = 0; i < N; i++)
     {
         for (size_t k = 0; k < M / 2; k++)
         {
-            MulH[i] = MulH[i] + data_A[i][2 * k] * data_A[i][2 * k + 1];
+            MulH[i] = MulH[i] + A->data[i][2 * k] * A->data[i][2 * k + 1];
         }
     }
     for (size_t i = 0; i < K; i++)
     {
         for (size_t k = 0; k < M / 2; k++)
         {
-            MulV[i] = MulV[i] + data_B[2 * k][i] * data_B[2 * k + 1][i];
+            MulV[i] = MulV[i] + B->data[2 * k][i] * B->data[2 * k + 1][i];
         }
     }
     for (size_t i = 0; i < N; i++)
     {
         for (size_t j = 0; j < K; j++)
         {
-            data_C[i][j] = -MulH[i] - MulV[j];
+            C->data[i][j] = -MulH[i] - MulV[j];
             for (size_t k = 0; k < M / 2; k++)
             {
-                data_C[i][j] = data_C[i][j] +
-                                              (data_A[i][2 * k + 1] + data_B[2 * k][j]) //*
-                                            * (data_A[i][2 * k] + data_B[2 * k + 1][j]);
+                C->data[i][j] = C->data[i][j] +
+                                              (A->data[i][2 * k + 1] + B->data[2 * k][j]) //*
+                                            * (A->data[i][2 * k] + B->data[2 * k + 1][j]);
             }
         }
     }
@@ -205,7 +198,7 @@ matrix_t *matrix_mult_vinograd(const matrix_t *A, const matrix_t *B)
         {
             for (size_t j = 0; j < K; j++)
             {
-                data_C[i][j] = data_C[i][j] + data_A[i][M - 1] * data_B[M - 1][j];
+                C->data[i][j] = C->data[i][j] + A->data[i][M - 1] * B->data[M - 1][j];
             }
         }
     }
