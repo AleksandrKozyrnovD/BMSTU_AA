@@ -20,7 +20,7 @@ set(LIB_DIR "${PROJECT_SOURCE_DIR}/dependencies")
 # --- START PROJECT ---
 
 file(GLOB source CONFIGURE_DEPENDS 
-                "${SRC_DIR}/*.cpp"
+                "${SRC_DIR}/dummy.cpp"
 )
 
 
